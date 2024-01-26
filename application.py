@@ -3,11 +3,13 @@ from flask_cors import CORS, cross_origin
 import joblib
 import pandas as pd
 import numpy as np
-import os
+# import os
 
-model_path = os.environ.get("MODEL_PATH")
+# model_path = os.environ.get("MODEL_PATH")
+model_file = "rfr_model.joblib"
+
 try:
-    model = joblib.load(open(model_path, "rb"))
+    model = joblib.load(model_file)
     print("Model loaded successfully")
 except Exception as e:
     print("Error loading model:", str(e))
@@ -58,20 +60,19 @@ def get_car_models():
 
     return jsonify(filtered_models.tolist())
 
+
 @app.route("/predict", methods=["POST"])
 @cross_origin()
 def predict():
-    
     global model
 
     # Check if the model is loaded
     if model is None:
         try:
-            model_path = os.environ.get("MODEL_PATH")
-            model = joblib.load(open(model_path, "rb"))
+            model = joblib.load(model_file)
             print("Model loaded successfully")
         except Exception as e:
-            return "Error loading model: " + str(e)
+            print("Error loading model:", str(e))
 
     company = request.form.get("company")
     car_model = request.form.get("car_models")
