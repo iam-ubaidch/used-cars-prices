@@ -15,6 +15,10 @@ except Exception as e:
 df = pd.read_csv("New_cleaned_data.csv")
 
 
+# # Define the 'model' variable here so it's accessible globally
+# model = pickle.load(open("RandomForestRegressorModel.pkl", "rb"))
+# df = pd.read_csv("New_cleaned_data.csv")
+
 @app.route("/", methods=["GET", "POST"])
 def index():
     companies = sorted(df["brand"].unique())
@@ -59,6 +63,9 @@ def get_car_models():
 @app.route("/predict", methods=["POST"])
 @cross_origin()
 def predict():
+    # Ensure that 'model' is accessible here
+    global model
+    
     company = request.form.get("company")
     car_model = request.form.get("car_models")
     transmission_type = request.form.get("transmission_type")
