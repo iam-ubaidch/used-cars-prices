@@ -3,11 +3,15 @@ from flask_cors import CORS, cross_origin
 import pickle
 import pandas as pd
 import numpy as np
+import os
+
+model_path = os.environ.get("MODEL_PATH")
+
 
 app = Flask(__name__)
 cors = CORS(app)
 try:
-    model = pickle.load(open("RandomForestRegressorModel.pkl", "rb"))
+    model = pickle.load(open(model_path, "rb"))
     print("Model loaded successfully")
 except Exception as e:
     print("Error loading model:", str(e))
@@ -65,7 +69,7 @@ def get_car_models():
 def predict():
     # Ensure that 'model' is accessible here
     global model
-    
+
     company = request.form.get("company")
     car_model = request.form.get("car_models")
     transmission_type = request.form.get("transmission_type")
