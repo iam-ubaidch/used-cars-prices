@@ -18,7 +18,7 @@ def load_model():
             chunk_data = joblib.load(chunk_filepath)
             combined_model += chunk_data
         # Load the reassembled model
-        model = joblib.loads(combined_model)
+        model = joblib.load(combined_model)
         print("Model loaded successfully")
     except Exception as e:
         print("Error loading model:", str(e))
