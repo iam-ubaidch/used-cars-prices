@@ -1,13 +1,13 @@
 from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS, cross_origin
-import pickle
+import joblib
 import pandas as pd
 import numpy as np
 import os
 
 model_path = os.environ.get("MODEL_PATH")
 try:
-    model = pickle.load(open(model_path, "rb"))
+    model = joblib.load(open(model_path, "rb"))
     print("Model loaded successfully")
 except Exception as e:
     print("Error loading model:", str(e))
@@ -17,10 +17,6 @@ cors = CORS(app)
 
 df = pd.read_csv("New_cleaned_data.csv")
 
-
-# # Define the 'model' variable here so it's accessible globally
-# model = pickle.load(open("RandomForestRegressorModel.pkl", "rb"))
-# df = pd.read_csv("New_cleaned_data.csv")
 
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -65,13 +61,14 @@ def get_car_models():
 @app.route("/predict", methods=["POST"])
 @cross_origin()
 def predict():
+    
     global model
 
     # Check if the model is loaded
     if model is None:
         try:
             model_path = os.environ.get("MODEL_PATH")
-            model = pickle.load(open(model_path, "rb"))
+            model = joblib.load(open(model_path, "rb"))
             print("Model loaded successfully")
         except Exception as e:
             return "Error loading model: " + str(e)
