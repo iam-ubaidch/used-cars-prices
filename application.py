@@ -3,13 +3,22 @@ from flask_cors import CORS, cross_origin
 import joblib
 import pandas as pd
 import numpy as np
-# import os
+import os
 
-# model_path = os.environ.get("MODEL_PATH")
-model_file = "rfr_model.joblib"
+# Specify the directory containing the model chunks
+model_chunks_dir = "model_chunks/"
 
 try:
-    model = joblib.load(model_file)
+    # Initialize an empty byte string to store the reassembled model
+    combined_model = b""
+
+    for chunk_filename in sorted(os.listdir(model_chunks_dir)):
+        chunk_filepath = os.path.join(model_chunks_dir, chunk_filename)
+        chunk_data = joblib.load(chunk_filepath)
+        combined_model += chunk_data
+
+    # Load the reassembled model
+    model = joblib.loads(combined_model)
     print("Model loaded successfully")
 except Exception as e:
     print("Error loading model:", str(e))
@@ -69,7 +78,16 @@ def predict():
     # Check if the model is loaded
     if model is None:
         try:
-            model = joblib.load(model_file)
+            # Initialize an empty byte string to store the reassembled model
+            combined_model = b""
+
+            for chunk_filename in sorted(os.listdir(model_chunks_dir)):
+                chunk_filepath = os.path.join(model_chunks_dir, chunk_filename)
+                chunk_data = joblib.load(chunk_filepath)
+                combined_model += chunk_data
+
+            # Load the reassembled model
+            model = joblib.loads(combined_model)
             print("Model loaded successfully")
         except Exception as e:
             print("Error loading model:", str(e))
