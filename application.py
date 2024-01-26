@@ -65,9 +65,16 @@ def get_car_models():
 @app.route("/predict", methods=["POST"])
 @cross_origin()
 def predict():
+    global model
+
     # Check if the model is loaded
     if model is None:
-        return "Error: Model not loaded."
+        try:
+            model_path = os.environ.get("MODEL_PATH")
+            model = pickle.load(open(model_path, "rb"))
+            print("Model loaded successfully")
+        except Exception as e:
+            return "Error loading model: " + str(e)
 
     company = request.form.get("company")
     car_model = request.form.get("car_models")
@@ -108,6 +115,7 @@ def predict():
     print(prediction)
 
     return str(np.round(prediction[0], 2))
+
 
 if __name__ == "__main__":
     app.run()
