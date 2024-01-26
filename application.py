@@ -70,6 +70,10 @@ def predict():
     # Ensure that 'model' is accessible here
     global model
 
+     # Check if the model is loaded
+    if model is None:
+        return "Error: Model not loaded."
+
     company = request.form.get("company")
     car_model = request.form.get("car_models")
     transmission_type = request.form.get("transmission_type")
