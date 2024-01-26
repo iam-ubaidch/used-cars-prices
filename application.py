@@ -6,7 +6,12 @@ import numpy as np
 
 app = Flask(__name__)
 cors = CORS(app)
-model = pickle.load(open("RandomForestRegressorModel.pkl", "rb"))
+try:
+    model = pickle.load(open("RandomForestRegressorModel.pkl", "rb"))
+    print("Model loaded successfully")
+except Exception as e:
+    print("Error loading model:", str(e))
+
 df = pd.read_csv("New_cleaned_data.csv")
 
 
