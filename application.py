@@ -62,14 +62,10 @@ def get_car_models():
 
     return jsonify(filtered_models.tolist())
 
-
 @app.route("/predict", methods=["POST"])
 @cross_origin()
 def predict():
-    # Ensure that 'model' is accessible here
-    global model
-
-     # Check if the model is loaded
+    # Check if the model is loaded
     if model is None:
         return "Error: Model not loaded."
 
@@ -112,7 +108,6 @@ def predict():
     print(prediction)
 
     return str(np.round(prediction[0], 2))
-
 
 if __name__ == "__main__":
     app.run()
