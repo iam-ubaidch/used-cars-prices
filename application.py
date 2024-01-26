@@ -6,15 +6,14 @@ import numpy as np
 import os
 
 model_path = os.environ.get("MODEL_PATH")
-
-
-app = Flask(__name__)
-cors = CORS(app)
 try:
     model = pickle.load(open(model_path, "rb"))
     print("Model loaded successfully")
 except Exception as e:
     print("Error loading model:", str(e))
+
+app = Flask(__name__)
+cors = CORS(app)
 
 df = pd.read_csv("New_cleaned_data.csv")
 
