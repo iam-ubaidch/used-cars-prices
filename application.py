@@ -1,12 +1,25 @@
 from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS, cross_origin
-import joblib
 import pandas as pd
 import numpy as np
+import joblib
+import os
 
 app = Flask(__name__)
 cors = CORS(app)
-model = joblib.load('rfr_model.joblib')
+
+
+# Load the model using the MODEL_PATH environment variable
+model_path = os.getenv("MODEL_PATH")
+
+try:
+    model = joblib.load(model_path)
+    print("Model loaded successfully")
+except Exception as e:
+    print("Error loading model:", str(e))
+
+    
+# model = joblib.load('rfr_model.joblib')
 df = pd.read_csv("New_cleaned_data.csv")
 
 
