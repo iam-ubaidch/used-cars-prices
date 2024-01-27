@@ -1,12 +1,12 @@
 from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS, cross_origin
-import pickle
+import joblib
 import pandas as pd
 import numpy as np
 
 app = Flask(__name__)
 cors = CORS(app)
-model = pickle.load(open("rfr_model.pkl", "rb"))
+model = joblib.load(open("rfr_model.joblib", "rb"))
 df = pd.read_csv("New_cleaned_data.csv")
 
 
@@ -54,6 +54,9 @@ def get_car_models():
 @app.route("/predict", methods=["POST"])
 @cross_origin()
 def predict():
+    
+    global model
+
     company = request.form.get("company")
     car_model = request.form.get("car_models")
     transmission_type = request.form.get("transmission_type")
