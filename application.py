@@ -68,6 +68,8 @@ def get_car_models():
 @cross_origin()
 def predict():
 
+    global model 
+    
     # Check if model is defined within this function
     if 'model' not in globals():
         return "Model not loaded properly"
