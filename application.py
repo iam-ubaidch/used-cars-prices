@@ -18,7 +18,7 @@ cors = CORS(app)
 # except Exception as e:
 #     print("Error loading model:", str(e))
 
-    
+
 model = joblib.load('rfr_model.joblib')
 df = pd.read_csv("New_cleaned_data.csv")
 
