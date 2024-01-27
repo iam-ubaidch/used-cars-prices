@@ -9,17 +9,17 @@ app = Flask(__name__)
 cors = CORS(app)
 
 
-# Load the model using the MODEL_PATH environment variable
-model_path = os.getenv("MODEL_PATH")
+# # Load the model using the MODEL_PATH environment variable
+# model_path = os.getenv("MODEL_PATH")
 
-try:
-    model = joblib.load(model_path)
-    print("Model loaded successfully")
-except Exception as e:
-    print("Error loading model:", str(e))
+# try:
+#     model = joblib.load(model_path)
+#     print("Model loaded successfully")
+# except Exception as e:
+#     print("Error loading model:", str(e))
 
     
-# model = joblib.load('rfr_model.joblib')
+model = joblib.load('rfr_model.joblib')
 df = pd.read_csv("New_cleaned_data.csv")
 
 
