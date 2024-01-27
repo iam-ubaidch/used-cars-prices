@@ -3,34 +3,20 @@ from flask_cors import CORS, cross_origin
 import joblib
 import pandas as pd
 import numpy as np
-import os
 
-# Specify the directory containing the model chunks
-model_chunks_dir = "model_chunks/"
+model_file = "rfr_model.joblib"
 
-def load_model():
-    global model
-    try:
-        # Initialize an empty byte string to store the reassembled model
-        combined_model = b""
-        for chunk_filename in sorted(os.listdir(model_chunks_dir)):
-            chunk_filepath = os.path.join(model_chunks_dir, chunk_filename)
-            chunk_data = joblib.load(chunk_filepath)
-            combined_model += chunk_data
-        # Load the reassembled model
-        model = joblib.load(combined_model)
-        print("Model loaded successfully")
-    except Exception as e:
-        print("Error loading model:", str(e))
-        model = None
-
-# Load the model when the app starts
-load_model()
+try:
+    model = joblib.load(model_file)
+    print("Model loaded successfully")
+except Exception as e:
+    print("Error loading model:", str(e))
 
 app = Flask(__name__)
 cors = CORS(app)
 
 df = pd.read_csv("New_cleaned_data.csv")
+
 
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -76,8 +62,6 @@ def get_car_models():
 @app.route("/predict", methods=["POST"])
 @cross_origin()
 def predict():
-    # global model
-
     company = request.form.get("company")
     car_model = request.form.get("car_models")
     transmission_type = request.form.get("transmission_type")
