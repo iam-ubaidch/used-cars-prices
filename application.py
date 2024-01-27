@@ -1,20 +1,12 @@
 from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS, cross_origin
-import joblib
+import pickle
 import pandas as pd
 import numpy as np
 
 app = Flask(__name__)
 cors = CORS(app)
-
-model_file = "rfr_model.joblib"
-
-try:
-    model = joblib.load(model_file)
-    print("Model loaded successfully")
-except Exception as e:
-    print("Error loading model:", str(e))
-    
+model = pickle.load(open("rfr_model.pkl", "rb"))
 df = pd.read_csv("New_cleaned_data.csv")
 
 
