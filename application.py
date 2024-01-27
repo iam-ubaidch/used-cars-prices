@@ -4,6 +4,9 @@ import joblib
 import pandas as pd
 import numpy as np
 
+app = Flask(__name__)
+cors = CORS(app)
+
 model_file = "rfr_model.joblib"
 
 try:
@@ -11,10 +14,7 @@ try:
     print("Model loaded successfully")
 except Exception as e:
     print("Error loading model:", str(e))
-
-app = Flask(__name__)
-cors = CORS(app)
-
+    
 df = pd.read_csv("New_cleaned_data.csv")
 
 
