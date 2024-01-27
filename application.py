@@ -6,7 +6,7 @@ import numpy as np
 
 app = Flask(__name__)
 cors = CORS(app)
-model = joblib.load(open("rfr_model.joblib", "rb"))
+model = joblib.load('rfr_model.joblib')
 df = pd.read_csv("New_cleaned_data.csv")
 
 
@@ -54,7 +54,7 @@ def get_car_models():
 @app.route("/predict", methods=["POST"])
 @cross_origin()
 def predict():
-    
+
     global model
 
     company = request.form.get("company")
